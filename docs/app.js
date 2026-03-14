@@ -254,7 +254,11 @@ async function loadLesson(path, silent = false) {
   }
 
   try {
-    const res = await fetch(`${CONTENT_BASE}/${path}`);
+    // Fetch with 10s timeout
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10_000);
+    const res = await fetch(`${CONTENT_BASE}/${path}`, { signal: controller.signal });
+    clearTimeout(timer);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${path}`);
     const md = await res.text();
 
@@ -276,13 +280,22 @@ async function loadLesson(path, silent = false) {
     const words = content.textContent.trim().split(/\s+/).length;
     $('read-time').textContent = `⏱ ${Math.max(1, Math.round(words / 200))} min read`;
 
-    // Render mermaid diagrams
+    // Render mermaid diagrams with 5s timeout per batch
     const mermaidEls = Array.from(content.querySelectorAll('.mermaid'));
     if (mermaidEls.length > 0) {
       try {
-        await mermaid.run({ nodes: mermaidEls });
+        await Promise.race([
+          mermaid.run({ nodes: mermaidEls }),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('mermaid timeout')), 5_000))
+        ]);
       } catch (e) {
-        console.warn('Mermaid rendering issue:', e);
+        console.warn('Mermaid skipped:', e.message);
+        // Replace failed diagrams with a plain code block fallback
+        mermaidEls.forEach(el => {
+          if (!el.querySelector('svg')) {
+            el.style.cssText = 'background:#f8fafc;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto;white-space:pre';
+          }
+        });
       }
     }
 
@@ -308,14 +321,17 @@ async function loadLesson(path, silent = false) {
     if (!silent) $('main').scrollTop = 0;
 
   } catch (err) {
+    const isTimeout = err.name === 'AbortError';
     $('content').innerHTML = `
       <div class="error">
         <p>Could not load <strong>${path}</strong></p>
-        <p style="margin-top:12px;font-size:13px;">${err.message}</p>
         <p style="margin-top:12px;font-size:13px;">
-          Make sure the server is running:<br>
-          <code>cd docs &amp;&amp; python server.py</code>
+          ${isTimeout ? 'Request timed out. Check your connection and try again.' : err.message}
         </p>
+        ${IS_LOCAL ? `<p style="margin-top:12px;font-size:13px;">
+          Make sure the server is running:<br>
+          <code>cd docs &amp;&amp; python3 server.py</code>
+        </p>` : ''}
       </div>`;
   }
 }
