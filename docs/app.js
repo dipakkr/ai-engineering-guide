@@ -1,3 +1,10 @@
+// ─── Environment ─────────────────────────────────────────────────────────────
+
+const IS_LOCAL = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const CONTENT_BASE = IS_LOCAL
+  ? '/content'
+  : 'https://raw.githubusercontent.com/dipakkr/ai-engineering-guide/main';
+
 // ─── Course Structure ─────────────────────────────────────────────────────────
 
 const SECTIONS = [
@@ -247,7 +254,7 @@ async function loadLesson(path, silent = false) {
   }
 
   try {
-    const res = await fetch(`/content/${path}`);
+    const res = await fetch(`${CONTENT_BASE}/${path}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${path}`);
     const md = await res.text();
 
