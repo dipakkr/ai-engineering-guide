@@ -422,6 +422,11 @@ function updateNavButtons() {
   nextBtn.textContent = next ? `${next.title} →` : 'Next →';
   nextBtn.disabled = !next;
   nextBtn.onclick = next ? () => loadLesson(next.path) : null;
+
+  const editLink = $('edit-page-link');
+  if (editLink && state.currentPath) {
+    editLink.href = `https://github.com/dipakkr/ai-engineering-guide/edit/main/content/${state.currentPath}`;
+  }
 }
 
 function updateCompleteButton() {

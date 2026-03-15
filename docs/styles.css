@@ -430,6 +430,34 @@ body {
 
 /* ─── Responsive ────────────────────────────────────────────────────────────── */
 
+/* ─── Contribute Bar ────────────────────────────────────────────────────────── */
+
+#contribute-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.contribute-label { color: var(--text-2); }
+.contribute-sep { color: var(--border); user-select: none; }
+
+.contribute-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.contribute-link:hover { color: var(--accent); }
+.contribute-link svg { flex-shrink: 0; }
+
 /* ─── Mobile Footer ─────────────────────────────────────────────────────────── */
 
 #mobile-footer {
