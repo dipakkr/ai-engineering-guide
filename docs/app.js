@@ -233,9 +233,33 @@ function setupMarked() {
 
 // ─── Load Lesson ──────────────────────────────────────────────────────────────
 
+// ─── URL Routing ──────────────────────────────────────────────────────────────
+
+function pathToHash(path) {
+  // "01-llm-foundations/01-transformer-intuition.md" → "#01-llm-foundations/01-transformer-intuition"
+  return '#' + path.replace(/\.md$/, '');
+}
+
+function hashToPath(hash) {
+  const raw = hash.startsWith('#') ? hash.slice(1) : hash;
+  return raw ? raw + '.md' : null;
+}
+
+function updateURL(path) {
+  const hash = pathToHash(path);
+  if (window.location.hash !== hash) {
+    history.pushState(null, '', hash);
+  }
+}
+
+// ─── Load Lesson ──────────────────────────────────────────────────────────────
+
 async function loadLesson(path, silent = false) {
   state.currentPath = path;
-  if (!silent) localStorage.setItem('asg_current', path);
+  if (!silent) {
+    updateURL(path);
+    localStorage.setItem('asg_current', path);
+  }
 
   // Expand the section that contains this lesson
   const lesson = ALL_LESSONS.find(l => l.path === path);
@@ -443,9 +467,19 @@ function init() {
     }
   });
 
-  // Restore last visited lesson, or start from the first
+  // Browser back/forward navigation
+  window.addEventListener('popstate', () => {
+    const path = hashToPath(window.location.hash);
+    const found = path && ALL_LESSONS.find(l => l.path === path);
+    if (found) loadLesson(found.path);
+  });
+
+  // Resolve starting lesson: URL hash → localStorage → first lesson
+  const hashPath = hashToPath(window.location.hash);
+  const fromHash = hashPath && ALL_LESSONS.find(l => l.path === hashPath);
   const last = localStorage.getItem('asg_current');
-  const start = ALL_LESSONS.find(l => l.path === last) || ALL_LESSONS[0];
+  const fromStorage = ALL_LESSONS.find(l => l.path === last);
+  const start = fromHash || fromStorage || ALL_LESSONS[0];
   loadLesson(start.path);
 }
 
