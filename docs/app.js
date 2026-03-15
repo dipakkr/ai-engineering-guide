@@ -496,6 +496,8 @@ async function loadStarCount() {
     const count = data.stargazers_count;
     const label = count >= 1000 ? `${(count / 1000).toFixed(1)}k` : String(count);
     document.getElementById('star-count').textContent = label;
+    const footer = document.getElementById('footer-star-count');
+    if (footer) footer.textContent = '★ ' + label;
   } catch {
     // Silently fail — button still works as a link
   }

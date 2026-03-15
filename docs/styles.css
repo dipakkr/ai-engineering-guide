@@ -430,6 +430,25 @@ body {
 
 /* ─── Responsive ────────────────────────────────────────────────────────────── */
 
+/* ─── Mobile Footer ─────────────────────────────────────────────────────────── */
+
+#mobile-footer {
+  display: none;
+}
+
+.footer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.footer-btn:hover { color: var(--accent); }
+.footer-btn svg { flex-shrink: 0; }
+
 /* ─── Menu Toggle Button ────────────────────────────────────────────────────── */
 
 #menu-toggle {
@@ -492,4 +511,15 @@ body {
   #content table { display: block; overflow-x: auto; }
 
   #content-wrapper { padding: 24px 16px 80px; }
+
+  #mobile-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 48px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    z-index: 10;
+  }
 }
