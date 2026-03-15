@@ -1,32 +1,43 @@
-# AI Engineering Guide
+# 🧠 AI Engineering Guide
 
-I built and curated this because I couldn't find a structured resources that treated AI Engineering design with the same rigor we apply to distributed systems. Every resource I found either hand-waved the engineering or assumed you were a researcher. This is for engineers who ship software and need to build AI systems that actually work in production.
+Designed for software engineers crossing over into AI, this guide focuses on system architecture, deployment patterns, and operational rigor for **LLMs, RAG, Prompt Engineering, Agents, and Evals**. 
 
----
+![Demo](guide-demo.gif)  
 
-<video src="https://github.com/dipakkr/ai-engineering-guide/releases/download/v1.0/guide-demo.mp4" controls width="100%"></video>
+<p align="center">
+  <a href="https://github.com/dipakkr"><img src="https://img.shields.io/badge/GitHub-dipakkr-181717?style=flat-square&logo=github" alt="GitHub dipakkr"></a>
+  <a href="https://twitter.com/dipakkr_"><img src="https://img.shields.io/badge/Twitter-@dipakkr_-1DA1F2?style=flat-square&logo=x" alt="Twitter dipakkr_"></a>
+  <a href="https://linkedin.com/in/dipakkr"><img src="https://img.shields.io/badge/LinkedIn-dipakkr-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn dipakkr"></a>
+</p>
 
----
+<p align="center">
+  <img src="https://img.shields.io/badge/Updated-March%202026-blue?style=flat-square" alt="Updated March 2026">
+  <img src="https://img.shields.io/badge/License-MIT-brightgreen?style=flat-square" alt="License MIT">
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome">
+</p>
+
 
 ## Who This Is For
 
 **This guide is for you if:**
+
 - You're a senior software engineer (5+ years) moving into AI/ML engineering
 - You're preparing for system design interviews at AI-focused companies or big tech AI teams
 - You build distributed systems and want to understand how AI components change the design
 - You want to go from "I've used the OpenAI API" to "I can design and defend a production AI system"
 
 **This guide is NOT for you if:**
+
 - You're looking for ML theory or math (read Goodfellow's Deep Learning textbook instead)
 - You want paper summaries without practical context
 - You're a researcher who needs academic rigor over engineering pragmatism
-
 
 ---
 
 ## Table of Contents
 
-### [01-llm-foundations](01-llm-foundations/)
+### [LLM Foundations](01-llm-foundations/)
+
 How transformers work, tokenization, context windows, when to fine-tune vs RAG.
 
 - [01-transformer-intuition](01-llm-foundations/01-transformer-intuition.md) — How transformers work, no math
@@ -40,7 +51,8 @@ How transformers work, tokenization, context windows, when to fine-tune vs RAG.
 - [09-fine-tuning](01-llm-foundations/09-fine-tuning.md) — LoRA, QLoRA, when NOT to fine-tune
 - [10-distillation-and-pruning](01-llm-foundations/10-distillation-and-pruning.md) — Making models cheaper
 
-### [02-prompt-engineering](02-prompt-engineering/)
+### [Prompt Engineering](02-prompt-engineering/)
+
 CoT, structured generation, prompt optimization, injection defense.
 
 - [01-prompting-patterns](02-prompt-engineering/01-prompting-patterns.md) — Zero-shot to Tree of Thought
@@ -49,7 +61,8 @@ CoT, structured generation, prompt optimization, injection defense.
 - [04-prompt-optimization](02-prompt-engineering/04-prompt-optimization.md) — DSPy, meta-prompting, eval-driven
 - [05-prompt-security](02-prompt-engineering/05-prompt-security.md) — Injection attacks and defenses
 
-### [03-retrieval-and-rag](03-retrieval-and-rag/)
+### [RAG - Retrieval Augmented Generation](03-retrieval-and-rag/)
+
 The complete RAG stack: chunking, embeddings, vector DBs, hybrid search, advanced patterns.
 
 - [01-rag-fundamentals](03-retrieval-and-rag/01-rag-fundamentals.md) — What/why/when, the naive pipeline
@@ -64,7 +77,8 @@ The complete RAG stack: chunking, embeddings, vector DBs, hybrid search, advance
 - [10-multimodal-rag](03-retrieval-and-rag/10-multimodal-rag.md) — ColPali, PDFs with tables and images
 - [11-rag-evaluation](03-retrieval-and-rag/11-rag-evaluation.md) — RAGAS, debug flowchart
 
-### [04-agents-and-orchestration](04-agents-and-orchestration/)
+### [Agents and Orchestration](04-agents-and-orchestration/)
+
 ReAct, tool use, MCP, LangGraph, multi-agent systems, memory.
 
 - [01-agent-fundamentals](04-agents-and-orchestration/01-agent-fundamentals.md) — ReAct, perception-action loop, failure modes
@@ -80,7 +94,8 @@ ReAct, tool use, MCP, LangGraph, multi-agent systems, memory.
 - [11-agentic-patterns](04-agents-and-orchestration/11-agentic-patterns.md) — Reflection, map-reduce, DAG patterns
 - [12-browser-and-computer-use](04-agents-and-orchestration/12-browser-and-computer-use.md) — Playwright, Claude Computer Use
 
-### [05-evaluation](05-evaluation/)
+### [LLM Evaluation](05-evaluation/)
+
 How to actually measure if your system works: RAGAS, LLM-as-judge, production eval.
 
 - [01-eval-fundamentals](05-evaluation/01-eval-fundamentals.md) — Why eval is hard, the eval pipeline
@@ -88,7 +103,8 @@ How to actually measure if your system works: RAGAS, LLM-as-judge, production ev
 - [03-llm-as-judge](05-evaluation/03-llm-as-judge.md) — Pointwise vs pairwise, calibration
 - [04-agent-and-e2e-eval](05-evaluation/04-agent-and-e2e-eval.md) — Task completion, A/B testing, continuous eval
 
-### [06-production-and-ops](06-production-and-ops/)
+### [Production Ops](06-production-and-ops/)
+
 Observability, guardrails, caching, inference infra, cost optimization.
 
 - [01-observability-and-tracing](06-production-and-ops/01-observability-and-tracing.md) — LangSmith vs Langfuse, what to log
@@ -99,7 +115,8 @@ Observability, guardrails, caching, inference infra, cost optimization.
 - [06-mlops-for-llms](06-production-and-ops/06-mlops-for-llms.md) — CI/CD, prompt versioning, blue-green
 - [07-cost-optimization](06-production-and-ops/07-cost-optimization.md) — Token optimization, model routing, batch
 
-### [07-system-design-interview](07-system-design-interview/)
+### [System Design Interview](07-system-design-interview/)
+
 Interview framework, 5 full case studies, 30 practice problems, 60+ conceptual questions.
 
 - [01-interview-framework](07-system-design-interview/01-interview-framework.md) — The 45-min structure. Worth the whole repo.
@@ -113,7 +130,8 @@ Interview framework, 5 full case studies, 30 practice problems, 60+ conceptual q
 - [09-practice-problems](07-system-design-interview/09-practice-problems.md) — 30 problems with solution skeletons
 - [10-conceptual-questions](07-system-design-interview/10-conceptual-questions.md) — 60+ questions with full conversational answers
 
-### [appendices](appendices/)
+### [Appendices](appendices/)
+
 Model pricing, glossary, cost formulas, essential papers.
 
 - [model-pricing-reference](appendices/model-pricing-reference.md) — Current pricing for all major models
@@ -121,7 +139,8 @@ Model pricing, glossary, cost formulas, essential papers.
 - [cost-estimation-formulas](appendices/cost-estimation-formulas.md) — Spreadsheet-ready formulas
 - [essential-papers](appendices/essential-papers.md) — The 20 papers worth reading
 
-### [code](code/)
+### [Demo Samples](code/)
+
 Working implementations: RAG pipeline, LangGraph agent, MCP server, eval pipeline.
 
 - [01-basic-rag](code/01-basic-rag/) — Minimal RAG in 100 lines
@@ -137,5 +156,7 @@ Working implementations: RAG pipeline, LangGraph agent, MCP server, eval pipelin
 ## Contributing
 
 The guide is intentionally opinionated. If you disagree with a recommendation, open an issue with your reasoning and production evidence. PRs welcome for:
+
 - Factual errors or outdated information (especially model specs and pricing)
 - Missing failure modes from your production experience
+
