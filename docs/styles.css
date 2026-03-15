@@ -108,8 +108,12 @@ body {
 /* ─── Search ────────────────────────────────────────────────────────────────── */
 
 #search-container {
-  position: relative;
-  padding: 12px 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 11;
+  background: var(--bg-sidebar);
+  padding: 12px 12px 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 #search-input-wrap {
@@ -238,10 +242,6 @@ body {
   font-size: 12px;
   color: var(--text-2);
   font-weight: 500;
-  position: sticky;
-  top: 0;
-  background: var(--bg-sidebar);
-  z-index: 10;
 }
 #progress-count { font-weight: 600; color: var(--text); }
 

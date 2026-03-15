@@ -453,13 +453,14 @@ function markComplete() {
 
 // ─── Search ──────────────────────────────────────────────────────────────────
 
-const searchIndex = { ready: false, loading: false, entries: [] };
+const searchIndex = { ready: false, loading: false, entries: [], _promise: null };
 
-async function buildSearchIndex() {
-  if (searchIndex.ready || searchIndex.loading) return;
+function buildSearchIndex() {
+  if (searchIndex.ready) return Promise.resolve();
+  if (searchIndex._promise) return searchIndex._promise;
   searchIndex.loading = true;
 
-  const results = await Promise.allSettled(
+  searchIndex._promise = Promise.allSettled(
     ALL_LESSONS.map(async (lesson) => {
       const res = await fetch(`${CONTENT_BASE}/${lesson.path}`);
       if (!res.ok) return null;
@@ -475,13 +476,15 @@ async function buildSearchIndex() {
         .trim();
       return { path: lesson.path, title: lesson.title, num: lesson.num, text };
     })
-  );
+  ).then(results => {
+    searchIndex.entries = results
+      .filter(r => r.status === 'fulfilled' && r.value)
+      .map(r => r.value);
+    searchIndex.ready = true;
+    searchIndex.loading = false;
+  });
 
-  searchIndex.entries = results
-    .filter(r => r.status === 'fulfilled' && r.value)
-    .map(r => r.value);
-  searchIndex.ready = true;
-  searchIndex.loading = false;
+  return searchIndex._promise;
 }
 
 function searchContent(query) {
@@ -526,7 +529,7 @@ function searchContent(query) {
 
 function highlightTerms(text, query) {
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-  let result = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  let result = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   for (const term of terms) {
     const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     result = result.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
@@ -555,7 +558,8 @@ function renderSearchResults(query) {
   container.classList.remove('hidden');
 
   if (results.length === 0) {
-    container.innerHTML = `<div class="search-status">No results for "${query.replace(/</g, '&lt;')}"</div>`;
+    const safeQuery = query.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    container.innerHTML = `<div class="search-status">No results for "${safeQuery}"</div>`;
     return;
   }
 
@@ -694,7 +698,7 @@ function initMobileNav() {
 
   toggle.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
   overlay.addEventListener('click', closeSidebar);
-  sidebar.addEventListener('click', e => { if (e.target.closest('.lesson-item')) closeSidebar(); });
+  sidebar.addEventListener('click', e => { if (e.target.closest('.lesson-item') || e.target.closest('.search-result')) closeSidebar(); });
 }
 
 document.addEventListener('DOMContentLoaded', () => { init(); loadStarCount(); initMobileNav(); });
