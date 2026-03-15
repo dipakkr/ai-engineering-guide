@@ -4,6 +4,10 @@ I built and curated this because I couldn't find a structured resources that tre
 
 ---
 
+<video src="https://github.com/dipakkr/ai-engineering-guide/releases/download/v1.0/guide-demo.mp4" controls width="100%"></video>
+
+---
+
 ## Who This Is For
 
 **This guide is for you if:**
