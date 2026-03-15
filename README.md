@@ -2,6 +2,8 @@
 
 Designed for software engineers crossing over into AI, this guide focuses on system architecture, deployment patterns, and operational rigor for **LLMs, RAG, Prompt Engineering, Agents, and Evals**. 
 
+**[📖 Read the live guide here](https://dipakkr.github.io/ai-engineering-guide)**
+
 ![Demo](guide-demo.gif)  
 
 <p align="center">
