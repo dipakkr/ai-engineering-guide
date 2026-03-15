@@ -11,6 +11,7 @@ const SECTIONS = [
   {
     id: 1, title: "LLM Foundations", dir: "01-llm-foundations",
     lessons: [
+      { file: "what-is-an-llm",              title: "What is an LLM?" },
       { file: "01-transformer-intuition",   title: "Transformer Intuition" },
       { file: "02-tokenization",             title: "Tokenization" },
       { file: "03-attention-mechanisms",     title: "Attention Mechanisms" },
@@ -26,7 +27,8 @@ const SECTIONS = [
   {
     id: 2, title: "Prompt Engineering", dir: "02-prompt-engineering",
     lessons: [
-      { file: "01-prompting-patterns",   title: "Prompting Patterns" },
+      { file: "what-is-prompt-engineering",    title: "What is Prompt Engineering?" },
+      { file: "01-prompting-patterns",         title: "Prompting Patterns" },
       { file: "02-context-engineering",  title: "Context Engineering" },
       { file: "03-structured-generation",title: "Structured Generation" },
       { file: "04-prompt-optimization",  title: "Prompt Optimization" },
@@ -36,6 +38,7 @@ const SECTIONS = [
   {
     id: 3, title: "Retrieval and RAG", dir: "03-retrieval-and-rag",
     lessons: [
+      { file: "what-is-rag",              title: "What is RAG?" },
       { file: "01-rag-fundamentals",      title: "RAG Fundamentals" },
       { file: "02-embedding-models",      title: "Embedding Models" },
       { file: "03-vector-indexing",       title: "Vector Indexing" },
