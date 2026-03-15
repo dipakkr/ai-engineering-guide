@@ -464,6 +464,16 @@ body {
 @media (max-width: 820px) {
   #menu-toggle { display: block; }
 
+  /* Compact header — single row, no wrapping */
+  #header { padding: 0 12px; gap: 8px; }
+  .header-left { gap: 6px; font-size: 13px; min-width: 0; flex: 1; overflow: hidden; }
+  .logo-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+  /* Hide GitHub label text on mobile, keep icon + count */
+  .header-btn .gh-label { display: none; }
+  .header-btn { padding: 5px 8px; gap: 4px; }
+
   #sidebar {
     position: fixed;
     top: var(--header-h);
@@ -476,5 +486,10 @@ body {
   }
   #sidebar.open { transform: translateX(0); }
 
-  #content-wrapper { padding: 24px 20px 80px; }
+  /* Prevent code blocks from breaking layout */
+  #main { overflow-x: hidden; }
+  #content pre { max-width: 100%; overflow-x: auto; font-size: 12px; }
+  #content table { display: block; overflow-x: auto; }
+
+  #content-wrapper { padding: 24px 16px 80px; }
 }
