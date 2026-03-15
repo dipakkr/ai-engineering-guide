@@ -451,6 +451,185 @@ function markComplete() {
   updateCompleteButton();
 }
 
+// ─── Search ──────────────────────────────────────────────────────────────────
+
+const searchIndex = { ready: false, loading: false, entries: [], _promise: null };
+
+function buildSearchIndex() {
+  if (searchIndex.ready) return Promise.resolve();
+  if (searchIndex._promise) return searchIndex._promise;
+  searchIndex.loading = true;
+
+  searchIndex._promise = Promise.allSettled(
+    ALL_LESSONS.map(async (lesson) => {
+      const res = await fetch(`${CONTENT_BASE}/${lesson.path}`);
+      if (!res.ok) return null;
+      const md = await res.text();
+      // Strip markdown syntax for plain-text searching
+      const text = md
+        .replace(/```[\s\S]*?```/g, ' ')   // code blocks
+        .replace(/`[^`]+`/g, ' ')           // inline code
+        .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1') // links/images
+        .replace(/#{1,6}\s?/g, '')          // headings
+        .replace(/[*_~>|]/g, '')            // emphasis, blockquotes
+        .replace(/\s+/g, ' ')
+        .trim();
+      return { path: lesson.path, title: lesson.title, num: lesson.num, text };
+    })
+  ).then(results => {
+    searchIndex.entries = results
+      .filter(r => r.status === 'fulfilled' && r.value)
+      .map(r => r.value);
+    searchIndex.ready = true;
+    searchIndex.loading = false;
+  });
+
+  return searchIndex._promise;
+}
+
+function searchContent(query) {
+  if (!query || query.length < 2) return [];
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+
+  return searchIndex.entries
+    .map(entry => {
+      const titleLower = entry.title.toLowerCase();
+      const textLower = entry.text.toLowerCase();
+
+      // Score: title matches weighted higher
+      let score = 0;
+      let matched = true;
+      for (const term of terms) {
+        const inTitle = titleLower.includes(term);
+        const inText = textLower.includes(term);
+        if (!inTitle && !inText) { matched = false; break; }
+        if (inTitle) score += 10;
+        if (inText) score += 1;
+      }
+      if (!matched) return null;
+
+      // Find a snippet around the first match in content
+      let snippet = '';
+      const firstTerm = terms[0];
+      const idx = textLower.indexOf(firstTerm);
+      if (idx !== -1) {
+        const start = Math.max(0, idx - 60);
+        const end = Math.min(entry.text.length, idx + firstTerm.length + 100);
+        snippet = (start > 0 ? '...' : '') +
+          entry.text.slice(start, end) +
+          (end < entry.text.length ? '...' : '');
+      }
+
+      return { path: entry.path, title: entry.title, num: entry.num, score, snippet };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 15);
+}
+
+function highlightTerms(text, query) {
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  let result = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  for (const term of terms) {
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    result = result.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+  }
+  return result;
+}
+
+let searchDebounce = null;
+
+function renderSearchResults(query) {
+  const container = $('search-results');
+  if (!query || query.length < 2) {
+    container.classList.add('hidden');
+    container.innerHTML = '';
+    return;
+  }
+
+  if (!searchIndex.ready) {
+    container.classList.remove('hidden');
+    container.innerHTML = '<div class="search-status">Building search index...</div>';
+    buildSearchIndex().then(() => renderSearchResults(query));
+    return;
+  }
+
+  const results = searchContent(query);
+  container.classList.remove('hidden');
+
+  if (results.length === 0) {
+    const safeQuery = query.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    container.innerHTML = `<div class="search-status">No results for "${safeQuery}"</div>`;
+    return;
+  }
+
+  container.innerHTML = results.map(r => `
+    <div class="search-result" onclick="selectSearchResult('${r.path}')">
+      <div class="search-result-title">
+        <span class="search-result-num">${r.num}</span>
+        ${highlightTerms(r.title, query)}
+      </div>
+      ${r.snippet ? `<div class="search-result-snippet">${highlightTerms(r.snippet, query)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function selectSearchResult(path) {
+  $('search-input').value = '';
+  $('search-results').classList.add('hidden');
+  $('search-results').innerHTML = '';
+  loadLesson(path);
+}
+
+function initSearch() {
+  const input = $('search-input');
+
+  // Start building index eagerly after a short delay
+  setTimeout(buildSearchIndex, 2000);
+
+  input.addEventListener('input', () => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      renderSearchResults(input.value.trim());
+    }, 200);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      input.value = '';
+      $('search-results').classList.add('hidden');
+      input.blur();
+    }
+    if (e.key === 'Enter') {
+      const first = $('search-results').querySelector('.search-result');
+      if (first) first.click();
+    }
+  });
+
+  // "/" shortcut to focus search
+  document.addEventListener('keydown', (e) => {
+    if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+    if (e.key === '/') {
+      e.preventDefault();
+      input.focus();
+    }
+  });
+
+  // Close results when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#search-container')) {
+      $('search-results').classList.add('hidden');
+    }
+  });
+
+  // Re-show results on focus if there's a query
+  input.addEventListener('focus', () => {
+    if (input.value.trim().length >= 2) {
+      renderSearchResults(input.value.trim());
+    }
+  });
+}
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 function init() {
@@ -461,6 +640,7 @@ function init() {
 
   $('theme-toggle').onclick = toggleTheme;
   $('complete-btn').onclick = markComplete;
+  initSearch();
 
   // Keyboard navigation: left/right arrow keys
   document.addEventListener('keydown', e => {
@@ -518,7 +698,7 @@ function initMobileNav() {
 
   toggle.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
   overlay.addEventListener('click', closeSidebar);
-  sidebar.addEventListener('click', e => { if (e.target.closest('.lesson-item')) closeSidebar(); });
+  sidebar.addEventListener('click', e => { if (e.target.closest('.lesson-item') || e.target.closest('.search-result')) closeSidebar(); });
 }
 
 document.addEventListener('DOMContentLoaded', () => { init(); loadStarCount(); initMobileNav(); });
