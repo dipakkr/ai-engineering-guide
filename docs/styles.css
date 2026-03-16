@@ -108,12 +108,10 @@ body {
 /* ─── Search ────────────────────────────────────────────────────────────────── */
 
 #search-container {
-  position: sticky;
-  top: 0;
-  z-index: 11;
-  background: var(--bg-sidebar);
-  padding: 12px 12px 12px;
-  border-bottom: 1px solid var(--border);
+  position: relative;
+  flex: 1;
+  max-width: 420px;
+  margin: 0 24px;
 }
 
 #search-input-wrap {
@@ -155,7 +153,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 3px;
   color: var(--text-2);
-  background: var(--bg-sidebar);
+  background: var(--bg);
   flex-shrink: 0;
   line-height: 1.6;
 }
@@ -163,17 +161,16 @@ body {
 
 #search-results {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
   max-height: 70vh;
   overflow-y: auto;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 0 0 var(--radius) var(--radius);
+  border-radius: var(--radius);
   box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-  z-index: 50;
-  margin: 0 12px;
+  z-index: 200;
 }
 [data-theme="dark"] #search-results {
   box-shadow: 0 8px 24px rgba(0,0,0,0.35);
@@ -242,6 +239,10 @@ body {
   font-size: 12px;
   color: var(--text-2);
   font-weight: 500;
+  position: sticky;
+  top: 0;
+  background: var(--bg-sidebar);
+  z-index: 10;
 }
 #progress-count { font-weight: 600; color: var(--text); }
 
@@ -644,6 +645,9 @@ body {
   /* Hide GitHub label text on mobile, keep icon + count */
   .header-btn .gh-label { display: none; }
   .header-btn { padding: 5px 8px; gap: 4px; }
+
+  #search-container { margin: 0 8px; max-width: none; }
+  #search-input { font-size: 12px; }
 
   #sidebar {
     position: fixed;
