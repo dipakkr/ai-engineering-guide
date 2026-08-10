@@ -9,8 +9,21 @@ const CONTENT_BASE = IS_LOCAL
 
 const SECTIONS = [
   {
-    id: 1, title: "LLM Foundations", dir: "01-llm-foundations",
+    id: 1, title: "Python for Applied AI", dir: "00-python-for-ai",
     lessons: [
+      { file: "00-checklist",                title: "✅ Chapter Checklist" },
+      { file: "what-is-python-for-ai",       title: "What is Python for AI?" },
+      { file: "01-python-fundamentals",      title: "Python Fundamentals" },
+      { file: "02-internals-and-performance",title: "Internals and Performance" },
+      { file: "03-async-and-concurrency",    title: "Async and Concurrency" },
+      { file: "04-ai-backend-python",        title: "AI / Backend Python" },
+      { file: "05-coding-interviews",        title: "Coding Interviews (DSA)" },
+    ],
+  },
+  {
+    id: 2, title: "LLM Foundations", dir: "01-llm-foundations",
+    lessons: [
+      { file: "00-checklist",                title: "✅ Chapter Checklist" },
       { file: "what-is-an-llm",              title: "What is an LLM?" },
       { file: "01-transformer-intuition",   title: "Transformer Intuition" },
       { file: "02-tokenization",             title: "Tokenization" },
@@ -25,8 +38,9 @@ const SECTIONS = [
     ],
   },
   {
-    id: 2, title: "Prompt Engineering", dir: "02-prompt-engineering",
+    id: 3, title: "Prompt Engineering", dir: "02-prompt-engineering",
     lessons: [
+      { file: "00-checklist",                  title: "✅ Chapter Checklist" },
       { file: "what-is-prompt-engineering",    title: "What is Prompt Engineering?" },
       { file: "01-prompting-patterns",         title: "Prompting Patterns" },
       { file: "02-context-engineering",  title: "Context Engineering" },
@@ -36,8 +50,9 @@ const SECTIONS = [
     ],
   },
   {
-    id: 3, title: "Retrieval and RAG", dir: "03-retrieval-and-rag",
+    id: 4, title: "Retrieval and RAG", dir: "03-retrieval-and-rag",
     lessons: [
+      { file: "00-checklist",             title: "✅ Chapter Checklist" },
       { file: "what-is-rag",              title: "What is RAG?" },
       { file: "01-rag-fundamentals",      title: "RAG Fundamentals" },
       { file: "02-embedding-models",      title: "Embedding Models" },
@@ -53,8 +68,9 @@ const SECTIONS = [
     ],
   },
   {
-    id: 4, title: "Agents and Orchestration", dir: "04-agents-and-orchestration",
+    id: 5, title: "Agents and Orchestration", dir: "04-agents-and-orchestration",
     lessons: [
+      { file: "00-checklist",                   title: "✅ Chapter Checklist" },
       { file: "01-agent-fundamentals",          title: "Agent Fundamentals" },
       { file: "02-tool-use-and-function-calling",title: "Tool Use and Function Calling" },
       { file: "03-mcp-protocol",                title: "MCP Protocol" },
@@ -70,8 +86,9 @@ const SECTIONS = [
     ],
   },
   {
-    id: 5, title: "Evaluation", dir: "05-evaluation",
+    id: 6, title: "Evaluation", dir: "05-evaluation",
     lessons: [
+      { file: "00-checklist",               title: "✅ Chapter Checklist" },
       { file: "01-eval-fundamentals",       title: "Eval Fundamentals" },
       { file: "02-retrieval-and-rag-eval",  title: "Retrieval and RAG Eval" },
       { file: "03-llm-as-judge",            title: "LLM as Judge" },
@@ -79,8 +96,9 @@ const SECTIONS = [
     ],
   },
   {
-    id: 6, title: "Production and Ops", dir: "06-production-and-ops",
+    id: 7, title: "Production and Ops", dir: "06-production-and-ops",
     lessons: [
+      { file: "00-checklist",                 title: "✅ Chapter Checklist" },
       { file: "01-observability-and-tracing", title: "Observability and Tracing" },
       { file: "02-guardrails-and-safety",     title: "Guardrails and Safety" },
       { file: "03-caching-strategies",        title: "Caching Strategies" },
@@ -91,8 +109,23 @@ const SECTIONS = [
     ],
   },
   {
-    id: 7, title: "System Design Interview", dir: "07-system-design-interview",
+    id: 8, title: "Agent Harnesses and Skills", dir: "08-agent-harnesses-and-skills",
     lessons: [
+      { file: "00-checklist",                title: "✅ Chapter Checklist" },
+      { file: "what-is-an-agent-harness",    title: "What is an Agent Harness?" },
+      { file: "01-harness-fundamentals",     title: "Harness Fundamentals" },
+      { file: "02-context-management",       title: "Context Management" },
+      { file: "03-skills",                   title: "Skills" },
+      { file: "04-coding-agent-harnesses",   title: "Coding-Agent Harnesses" },
+      { file: "05-execution",                title: "Execution" },
+      { file: "06-reliability",              title: "Reliability" },
+      { file: "07-real-systems",             title: "Study Real Systems" },
+    ],
+  },
+  {
+    id: 9, title: "System Design Interview", dir: "07-system-design-interview",
+    lessons: [
+      { file: "00-checklist",                title: "✅ Chapter Checklist" },
       { file: "01-interview-framework",      title: "Interview Framework" },
       { file: "02-design-patterns-catalog",  title: "Design Patterns Catalog" },
       { file: "03-architecture-templates",   title: "Architecture Templates" },
@@ -106,7 +139,7 @@ const SECTIONS = [
     ],
   },
   {
-    id: 8, title: "Appendices", dir: "appendices",
+    id: 10, title: "Appendices", dir: "appendices",
     lessons: [
       { file: "model-pricing-reference",   title: "Model Pricing Reference" },
       { file: "glossary",                  title: "Glossary" },

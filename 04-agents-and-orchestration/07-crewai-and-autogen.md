@@ -15,6 +15,16 @@ The production reality is different. Multi-agent systems multiply failure modes.
 
 My recommendation: use single agents until you have evidence they can't handle the task. If you've pushed a single agent to its limits and it's genuinely failing on tasks that require parallel specialized work, then evaluate multi-agent frameworks.
 
+```mermaid
+graph TD
+    A[Manager Agent] --> B[Researcher Agent]
+    A --> C[Writer Agent]
+    A --> D[Reviewer Agent]
+    B --> E[Final Output]
+    C --> E
+    D --> E
+```
+
 ---
 
 ## CrewAI

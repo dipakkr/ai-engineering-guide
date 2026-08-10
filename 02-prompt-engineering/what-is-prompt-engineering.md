@@ -57,6 +57,16 @@ Most effective prompts combine several elements:
 
 You won't always use all five elements — but knowing each one helps you diagnose why a prompt isn't working.
 
+```mermaid
+graph TD
+    A[System prompt] --> F[Model]
+    B[Context] --> F
+    C[Task] --> F
+    D[Input] --> F
+    E[Output format] --> F
+    F --> G[Response]
+```
+
 ---
 
 ## Core Prompting Techniques

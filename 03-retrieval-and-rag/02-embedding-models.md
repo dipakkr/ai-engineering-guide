@@ -15,6 +15,18 @@ The distance between vectors (usually cosine similarity, ranging from -1 to 1) i
 
 The model determines what "similar" means. A general-purpose model might not understand that "myocardial infarction" and "heart attack" are the same thing. A medical embedding model would. Domain-specific retrieval often requires domain-specific models.
 
+```mermaid
+graph LR
+    A[How do I get a refund] --> M[Embedding Model]
+    B[What is the return policy] --> M
+    C[Todays weather forecast] --> M
+    M --> V1[Vector near cluster]
+    M --> V2[Vector near cluster]
+    M --> V3[Vector far away]
+```
+
+The first two inputs mean nearly the same thing, so their vectors land close together in the space. The unrelated third input lands far away. Retrieval is just finding the vectors nearest to the query.
+
 ---
 
 ## MTEB: How to Evaluate Models

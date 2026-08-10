@@ -21,6 +21,17 @@ Traditional ML MLOps focuses on model versioning, training pipelines, and featur
 
 The key insight: for teams using managed API LLMs, the "model" is mostly the system prompt. Treat prompt engineering as the equivalent of model development. That means: version control, code review, test coverage, and staged rollouts.
 
+The LLMOps lifecycle is a loop: every prompt change cycles through these stages and back to the next experiment.
+
+```mermaid
+graph LR
+    A[Experiment\nnew prompt version] --> B[Evaluate\nCI eval gate]
+    B --> C[Deploy\ncanary rollout]
+    C --> D[Promote to full traffic]
+    D --> E[Monitor\nquality and cost]
+    E --> A
+```
+
 ---
 
 ## Prompt Versioning

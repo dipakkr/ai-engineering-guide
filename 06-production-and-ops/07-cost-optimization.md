@@ -27,6 +27,19 @@ Total:                                                $1,575/day = $47,250/month
 
 The output tokens cost 5x more per token than input tokens. Short responses are dramatically cheaper than long ones. This is the first place I look: is the response longer than it needs to be?
 
+A cost-optimized request path checks a semantic cache first, and only on a miss routes to the cheapest model that fits the task.
+
+```mermaid
+graph LR
+    A[Request] --> B{Semantic cache}
+    B --> |Hit| F[Response]
+    B --> |Miss| C{Router}
+    C --> |Simple| D[Small model]
+    C --> |Complex| E[Large model]
+    D --> F
+    E --> F
+```
+
 ---
 
 ## Lever 1: Caching

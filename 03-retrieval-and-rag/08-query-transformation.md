@@ -22,6 +22,21 @@ Before adding query transformation, understand which failure mode you're fixing.
 
 Identify the failure mode from production logs before choosing a transformation strategy.
 
+```mermaid
+graph TD
+    Q[Raw Query] --> R[Query Rewrite]
+    Q --> M[Multi Query]
+    Q --> H[HyDE]
+    Q --> D[Decomposition]
+    R --> RT[Retrieval]
+    M --> RT
+    H --> RT
+    D --> RT
+    RT --> F[Merged Results]
+```
+
+Each transformation reshapes the raw query into one or more retrieval-friendly forms. You apply the one that matches your failure mode, then fuse whatever each branch retrieves into a single merged result set.
+
 ---
 
 ## HyDE: Hypothetical Document Embeddings

@@ -75,6 +75,18 @@ def estimate_cost(model: str, usage) -> float:
 
 **What not to log:** Don't log raw user inputs in shared logs if they contain PII. Log a hashed user ID, not the content. Keep a separate encrypted store for full conversation content that requires explicit access.
 
+A single LLM request becomes a trace: a root span with child spans for each step, all reported to your observability backend.
+
+```mermaid
+graph TD
+    A[Root request span] --> B[Retrieval span]
+    A --> C[LLM call span]
+    A --> D[Tool call span]
+    B --> E[Observability backend]
+    C --> E
+    D --> E
+```
+
 ---
 
 ## LangSmith: Logging for LangChain Ecosystems

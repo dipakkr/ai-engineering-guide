@@ -20,6 +20,47 @@ RAG fixes both problems — without retraining the model.
 
 ---
 
+## The RAG Pipeline at a Glance
+
+<svg viewBox="0 0 760 300" role="img" aria-label="RAG pipeline: an offline ingestion path indexes documents into a vector database, and an online query path retrieves relevant chunks to ground the LLM's answer." style="width:100%;height:auto;max-width:760px;font-family:inherit;color:inherit">
+  <style>
+    .lbl{fill:currentColor;font-size:13px}
+    .cap{fill:currentColor;font-size:12px;opacity:.75}
+    .hd{fill:currentColor;font-size:13px;font-weight:700;letter-spacing:.04em;opacity:.6}
+    .bx{fill:#fff;font-size:12.5px;font-weight:600}
+    .flow{stroke:currentColor;stroke-width:1.6;fill:none;opacity:.55;marker-end:url(#ar)}
+  </style>
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="currentColor" opacity=".55"/></marker>
+  </defs>
+  <text x="16" y="26" class="hd">INGESTION · OFFLINE</text>
+  <g>
+    <rect x="16"  y="40" width="118" height="52" rx="9" fill="#64748b"/><text x="75"  y="63" text-anchor="middle" class="bx">Documents</text><text x="75" y="80" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">PDFs · docs · wiki</text>
+    <rect x="170" y="40" width="104" height="52" rx="9" fill="#64748b"/><text x="222" y="63" text-anchor="middle" class="bx">Chunk</text><text x="222" y="80" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">split text</text>
+    <rect x="310" y="40" width="112" height="52" rx="9" fill="#6366f1"/><text x="366" y="63" text-anchor="middle" class="bx">Embed</text><text x="366" y="80" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">text to vector</text>
+    <rect x="458" y="40" width="150" height="52" rx="9" fill="#10b981"/><text x="533" y="63" text-anchor="middle" class="bx">Vector Database</text><text x="533" y="80" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">indexed chunks</text>
+    <path class="flow" d="M134 66 H168"/><path class="flow" d="M274 66 H308"/><path class="flow" d="M422 66 H456"/>
+  </g>
+  <text x="16" y="152" class="hd">QUERY · ONLINE</text>
+  <g>
+    <rect x="16"  y="166" width="118" height="52" rx="9" fill="#64748b"/><text x="75"  y="189" text-anchor="middle" class="bx">User Question</text><text x="75" y="206" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">refund policy?</text>
+    <rect x="170" y="166" width="104" height="52" rx="9" fill="#6366f1"/><text x="222" y="196" text-anchor="middle" class="bx">Embed query</text>
+    <rect x="458" y="166" width="150" height="52" rx="9" fill="#f59e0b"/><text x="533" y="189" text-anchor="middle" class="bx">Top-k chunks</text><text x="533" y="206" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">most relevant</text>
+    <rect x="636" y="103" width="108" height="115" rx="9" fill="#f43f5e"/><text x="690" y="150" text-anchor="middle" class="bx">LLM</text><text x="690" y="168" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">question</text><text x="690" y="182" text-anchor="middle" class="bx" style="font-weight:400;font-size:11px">+ chunks</text>
+    <path class="flow" d="M134 192 H168"/>
+    <path class="flow" d="M274 192 H456"/><text x="365" y="186" text-anchor="middle" class="cap">search + retrieve</text>
+    <path class="flow" d="M533 94 V164"/><text x="542" y="134" text-anchor="start" class="cap">reads index</text>
+    <path class="flow" d="M608 192 H634"/>
+  </g>
+  <rect x="636" y="234" width="108" height="46" rx="9" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+  <text x="690" y="254" text-anchor="middle" class="lbl">Grounded</text><text x="690" y="270" text-anchor="middle" class="lbl">answer + citations</text>
+  <path class="flow" d="M690 218 V232"/>
+  <text x="16" y="262" class="cap">The vector database is written once during ingestion and read on every query —</text>
+  <text x="16" y="280" class="cap">retrieval injects fresh, private context the model never saw in training.</text>
+</svg>
+
+---
+
 ## How RAG Works: The Simple Version
 
 ```

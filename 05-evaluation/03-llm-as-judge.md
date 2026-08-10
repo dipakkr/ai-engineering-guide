@@ -27,6 +27,16 @@ LLM-as-judge doesn't replace human judgment. It approximates it at scale. The ca
 
 **Pairwise:** Show the judge two responses and ask which is better.
 
+```mermaid
+graph TD
+    A[Candidate answer] --> J[Judge model]
+    R[Rubric] --> J
+    J --> S[Pointwise score 1 to 5]
+    CA[Candidate A] --> P[Judge model]
+    CB[Candidate B] --> P
+    P --> W[Pairwise winner A or B]
+```
+
 ```python
 from anthropic import Anthropic
 

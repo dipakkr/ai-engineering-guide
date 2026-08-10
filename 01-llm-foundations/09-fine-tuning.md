@@ -3,7 +3,7 @@
 > **TL;DR**: Fine-tuning adapts a pre-trained model to your specific task by continuing training on your data. LoRA (Low-Rank Adaptation) makes this practical: instead of updating 7B parameters, you train ~10M adapter weights. QLoRA combines 4-bit quantization with LoRA to fine-tune on a single consumer GPU. The biggest mistake is fine-tuning when you should be prompting. The second biggest mistake is fine-tuning when you should be using RAG.
 
 **Prerequisites**: [Training Pipeline](05-training-pipeline.md), [Small Language Models](07-small-language-models.md), [Quantization](08-quantization.md)
-**Related**: [Prompt Optimization](../02-prompt-engineering/05-prompt-optimization.md), [Model Selection](06-model-landscape.md)
+**Related**: [Prompt Optimization](../02-prompt-engineering/04-prompt-optimization.md), [Model Selection](06-model-landscape.md)
 
 ---
 
@@ -43,6 +43,15 @@ Full fine-tuning updates all 7 billion parameters of a 7B model. LoRA ([Hu et al
 W_new = W + B × A
 ```
 Where B is (d_in, r) and A is (r, d_out), and r is the rank (typically 8-64). Instead of updating d_in × d_out parameters, you update (d_in + d_out) × r parameters — 100-1000x fewer.
+
+```mermaid
+graph LR
+    A[Input activations] --> B[Frozen base weights W]
+    A --> C[Adapter B\nrank r down]
+    C --> D[Adapter A\nrank r up]
+    B --> E[Merged output\nbase plus adapter]
+    D --> E
+```
 
 ```python
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
