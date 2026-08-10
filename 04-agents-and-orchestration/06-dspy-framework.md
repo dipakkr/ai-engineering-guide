@@ -15,6 +15,15 @@ DSPy's insight: if you have a clear definition of what "good output" looks like 
 
 It's the difference between hand-tuning hyperparameters and running a hyperparameter search. Both can get good results; automation scales better.
 
+```mermaid
+graph TD
+    A[Signature] --> C[DSPy Module]
+    C --> D[Compiler]
+    B[Training Examples] --> D
+    E[Metric] --> D
+    D --> F[Optimized Program]
+```
+
 ---
 
 ## Core Concepts

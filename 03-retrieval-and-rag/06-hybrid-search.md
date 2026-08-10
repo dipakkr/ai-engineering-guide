@@ -20,6 +20,17 @@ The combination beats both approaches because different queries have different n
 
 A [study by Pinecone](https://www.pinecone.io/learn/hybrid-search/) found that hybrid search improved recall@10 by an average of 10-15% across diverse query types compared to pure dense search.
 
+```mermaid
+graph TD
+    Q[User Query] --> D[Dense Semantic Search]
+    Q --> B[BM25 Keyword Search]
+    D --> F[Fusion RRF]
+    B --> F
+    F --> R[Final Ranking]
+```
+
+The query fans out to both retrievers in parallel. Dense search catches meaning, BM25 catches exact terms, and RRF merges the two ranked lists into one final ranking without needing to calibrate their scores.
+
 ---
 
 ## BM25: The Sparse Component

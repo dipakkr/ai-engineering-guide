@@ -56,6 +56,16 @@ Repeats:     "Gravity", " is", " the", " force", " that"...
 
 This happens token by token until the model decides to stop.
 
+```mermaid
+graph LR
+    A[Input text] --> B[Tokenize]
+    B --> C[Transformer layers]
+    C --> D[Logits over vocab]
+    D --> E[Sample next token]
+    E --> F[Append to text]
+    F --> B
+```
+
 ---
 
 ## LLMs vs. Traditional Software

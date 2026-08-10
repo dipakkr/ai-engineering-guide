@@ -24,6 +24,32 @@ The mechanism:
 
 The result: each token gets a new representation that's a weighted combination of all other tokens' values, weighted by how relevant they were to the query.
 
+<svg viewBox="0 0 760 250" role="img" aria-label="Self-attention for the word bank: its Query is scored against every token's Key, softmax turns the scores into weights (river dominates), and the output is the weighted sum of Values — so bank takes on the river meaning." style="width:100%;height:auto;max-width:760px;font-family:inherit;color:inherit">
+  <style>
+    .cap{fill:currentColor;font-size:12px;opacity:.75}
+    .st{fill:#fff;font-size:12.5px;font-weight:600}
+    .sub{fill:#fff;font-size:10.5px;font-weight:400}
+    .flow{stroke:currentColor;stroke-width:1.6;fill:none;opacity:.55;marker-end:url(#ara)}
+    .wl{fill:currentColor;font-size:11px;opacity:.85}
+  </style>
+  <defs><marker id="ara" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="currentColor" opacity=".55"/></marker></defs>
+  <text x="16" y="24" class="cap">Focus token: <tspan style="font-weight:700">"bank"</tspan> in "The bank by the river"</text>
+  <rect x="16"  y="40" width="150" height="60" rx="9" fill="#6366f1"/><text x="91"  y="66" text-anchor="middle" class="st">Query</text><text x="91"  y="84" text-anchor="middle" class="sub">what bank looks for</text>
+  <rect x="205" y="40" width="150" height="60" rx="9" fill="#64748b"/><text x="280" y="66" text-anchor="middle" class="st">Score vs Keys</text><text x="280" y="84" text-anchor="middle" class="sub">Q dot K per token</text>
+  <rect x="394" y="40" width="150" height="60" rx="9" fill="#f59e0b"/><text x="469" y="66" text-anchor="middle" class="st">Softmax weights</text><text x="469" y="84" text-anchor="middle" class="sub">scores to probabilities</text>
+  <rect x="583" y="40" width="161" height="60" rx="9" fill="#10b981"/><text x="663" y="66" text-anchor="middle" class="st">Weighted sum</text><text x="663" y="84" text-anchor="middle" class="sub">of every Value</text>
+  <path class="flow" d="M166 70 H203"/><path class="flow" d="M355 70 H392"/><path class="flow" d="M544 70 H581"/>
+  <text x="16" y="140" class="cap">Attention weights from "bank" (softmax output) — "river" dominates:</text>
+  <g transform="translate(16,150)">
+    <text x="0"  y="12" class="wl">river</text><rect x="70" y="2"  width="300" height="12" rx="3" fill="#f59e0b"/><text x="378" y="12" class="wl">0.62</text>
+    <text x="0"  y="32" class="wl">bank</text> <rect x="70" y="22" width="97"  height="12" rx="3" fill="#f59e0b" opacity=".7"/><text x="175" y="32" class="wl">0.20</text>
+    <text x="0"  y="52" class="wl">by</text>   <rect x="70" y="42" width="48"  height="12" rx="3" fill="#f59e0b" opacity=".5"/><text x="126" y="52" class="wl">0.10</text>
+    <text x="0"  y="72" class="wl">the</text>  <rect x="70" y="62" width="39"  height="12" rx="3" fill="#f59e0b" opacity=".4"/><text x="117" y="72" class="wl">0.08</text>
+  </g>
+  <text x="470" y="200" class="cap" text-anchor="start">Output: "bank" now encodes the</text>
+  <text x="470" y="218" class="cap" text-anchor="start"><tspan style="font-weight:700">river</tspan> meaning, not the financial one.</text>
+</svg>
+
 **Why it works:** "Bank" with a high dot product against "river"'s key updates its representation using "river"'s value information. The result captures the "geographical bank" meaning, not the "financial bank" meaning.
 
 ---

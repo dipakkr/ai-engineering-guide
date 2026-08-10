@@ -15,6 +15,14 @@ The problems emerged as applications scaled. The abstractions that make prototyp
 
 My position: LangChain is a productivity tool for exploration. Treat it like scaffolding, not foundation. Use it to figure out what you want to build, then decide how much of the LangChain code to keep.
 
+```mermaid
+graph LR
+    A[User Input] --> B[Prompt Template]
+    B --> C[LLM]
+    C --> D[Output Parser]
+    D --> E[Final Result]
+```
+
 ---
 
 ## What LangChain Does Well

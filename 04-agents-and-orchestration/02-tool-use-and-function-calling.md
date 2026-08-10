@@ -15,6 +15,18 @@ Function calling gives the model a way to say "I want to call function X with ar
 
 The key insight: the model doesn't execute the function. It just produces a structured request. Your code executes it. This separation is what makes function calling safe and auditable.
 
+```mermaid
+sequenceDiagram
+    participant Model
+    participant Runtime
+    participant Tool
+    Model->>Runtime: Request tool call with name and args
+    Runtime->>Tool: Execute the function
+    Tool->>Runtime: Return raw result
+    Runtime->>Model: Send tool result back
+    Model->>Model: Continue reasoning or finish
+```
+
 ---
 
 ## Provider Comparison

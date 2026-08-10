@@ -24,6 +24,33 @@ Modern LLMs use Byte Pair Encoding (BPE), a data-driven tokenization that merges
 
 The rough rule: 1 token ≈ 4 characters ≈ 0.75 words in English. 750 words ≈ 1,000 tokens.
 
+<svg viewBox="0 0 760 210" role="img" aria-label="Tokenization pipeline: raw text is split by a BPE tokenizer into subword tokens, each mapped to an integer ID, then to an embedding vector the model consumes. Every token in and out costs money." style="width:100%;height:auto;max-width:760px;font-family:inherit;color:inherit">
+  <style>
+    .cap{fill:currentColor;font-size:12px;opacity:.75}
+    .st{fill:#fff;font-size:12.5px;font-weight:600}
+    .mono{fill:#fff;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+    .flow{stroke:currentColor;stroke-width:1.6;fill:none;opacity:.55;marker-end:url(#art)}
+    .hd{fill:currentColor;font-size:11px;opacity:.6;letter-spacing:.04em}
+  </style>
+  <defs><marker id="art" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="currentColor" opacity=".55"/></marker></defs>
+  <text x="20"  y="20" text-anchor="middle" class="hd" transform="translate(40,0)">TEXT</text>
+  <text x="250" y="20" class="hd" text-anchor="middle">BPE TOKENIZER</text>
+  <text x="470" y="20" class="hd" text-anchor="middle">TOKEN IDS</text>
+  <text x="670" y="20" class="hd" text-anchor="middle">MODEL</text>
+  <rect x="16"  y="34" width="132" height="56" rx="9" fill="#64748b"/><text x="82" y="68" text-anchor="middle" class="mono">tokenization</text>
+  <rect x="188" y="34" width="150" height="56" rx="9" fill="#6366f1"/><text x="263" y="60" text-anchor="middle" class="st">Merge frequent</text><text x="263" y="78" text-anchor="middle" class="st" style="font-weight:400;font-size:11px">character pairs</text>
+  <rect x="392" y="34" width="150" height="56" rx="9" fill="#10b981"/><text x="467" y="60" text-anchor="middle" class="mono">3097</text><text x="467" y="78" text-anchor="middle" class="mono">1634</text>
+  <rect x="596" y="34" width="148" height="56" rx="9" fill="#f43f5e"/><text x="670" y="60" text-anchor="middle" class="st">Embedding</text><text x="670" y="78" text-anchor="middle" class="st" style="font-weight:400;font-size:11px">vectors in</text>
+  <path class="flow" d="M148 62 H186"/><path class="flow" d="M338 62 H390"/><path class="flow" d="M542 62 H594"/>
+  <text x="20" y="126" class="cap">The tokenizer splits into learned subwords — the merge rule keeps common pieces whole:</text>
+  <g transform="translate(20,138)">
+    <rect x="0"   y="0" width="90"  height="30" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.6"/><text x="45"  y="20" text-anchor="middle" class="cap" style="opacity:1;font-family:ui-monospace,Menlo,monospace">token</text>
+    <rect x="100" y="0" width="100" height="30" rx="6" fill="none" stroke="#f59e0b" stroke-width="1.6"/><text x="150" y="20" text-anchor="middle" class="cap" style="opacity:1;font-family:ui-monospace,Menlo,monospace">ization</text>
+    <text x="214" y="20" class="cap">= 2 tokens. Code, JSON, and non-Latin text fragment into many more.</text>
+  </g>
+  <text x="20" y="196" class="cap"><tspan style="font-weight:700">Tokens are money:</tspan> you pay per token in and per token out — count with tiktoken before you send.</text>
+</svg>
+
 ---
 
 ## Token Counting in Practice
